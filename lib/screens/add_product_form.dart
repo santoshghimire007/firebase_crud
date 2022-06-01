@@ -2,9 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:firestore_ex/models/product_model.dart';
+// import 'package:firestore_ex/models/product_model.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+// import 'package:firebase_core/firebase_core.dart';
 
 class AddProductsForm extends StatefulWidget {
   const AddProductsForm({Key? key}) : super(key: key);
@@ -30,7 +31,7 @@ class _AddProductsFormState extends State<AddProductsForm> {
 
   Future<void> _openImagePicker() async {
     final XFile? pickedImage =
-        await _picker.pickImage(source: ImageSource.gallery);
+        await _picker.pickImage(source: ImageSource.gallery, imageQuality: 10);
     if (pickedImage != null) {
       setState(() {
         _image = File(pickedImage.path);
@@ -60,11 +61,11 @@ class _AddProductsFormState extends State<AddProductsForm> {
   }
 
   void _saveData(String imageUrl) {
-    FirebaseFirestore.instance.collection("products").add({
+    FirebaseFirestore.instance.collection("electronics").add({
       "imageUrl": imageUrl,
       "name": nameController.text,
-      "price": priceController,
-      "stock": stock,
+      "price": priceController.text,
+      // "stock": stock,
     }).whenComplete(() {
       setState(() {
         _loading = false;
@@ -149,19 +150,19 @@ class _AddProductsFormState extends State<AddProductsForm> {
             controller: priceController,
             keyboardType: TextInputType.number,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              const Text('Stock'),
-              Switch(
-                  value: stock,
-                  onChanged: (bool value) {
-                    setState(() {
-                      stock = value;
-                    });
-                  }),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+          //   children: [
+          //     const Text('Stock'),
+          //     Switch(
+          //         value: stock,
+          //         onChanged: (bool value) {
+          //           setState(() {
+          //             stock = value;
+          //           });
+          //         }),
+          //   ],
+          // ),
           Center(
             child: ElevatedButton(
               onPressed: () {
